@@ -6,6 +6,6 @@ message EchoMessage {
   string value = 1;
 }
 
-service EchoServer {
+service EchoService {
   rpc Echo (EchoMessage) returns (EchoMessage) {}
 }

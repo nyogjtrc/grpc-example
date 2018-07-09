@@ -34,7 +34,7 @@ func (m *EchoMessage) Reset()         { *m = EchoMessage{} }
 func (m *EchoMessage) String() string { return proto.CompactTextString(m) }
 func (*EchoMessage) ProtoMessage()    {}
 func (*EchoMessage) Descriptor() ([]byte, []int) {
-	return fileDescriptor_echo_65f4ddaa9106d9fb, []int{0}
+	return fileDescriptor_echo_8be4be0a62b13d2b, []int{0}
 }
 func (m *EchoMessage) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_EchoMessage.Unmarshal(m, b)
@@ -73,79 +73,79 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// EchoServerClient is the client API for EchoServer service.
+// EchoServiceClient is the client API for EchoService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type EchoServerClient interface {
+type EchoServiceClient interface {
 	Echo(ctx context.Context, in *EchoMessage, opts ...grpc.CallOption) (*EchoMessage, error)
 }
 
-type echoServerClient struct {
+type echoServiceClient struct {
 	cc *grpc.ClientConn
 }
 
-func NewEchoServerClient(cc *grpc.ClientConn) EchoServerClient {
-	return &echoServerClient{cc}
+func NewEchoServiceClient(cc *grpc.ClientConn) EchoServiceClient {
+	return &echoServiceClient{cc}
 }
 
-func (c *echoServerClient) Echo(ctx context.Context, in *EchoMessage, opts ...grpc.CallOption) (*EchoMessage, error) {
+func (c *echoServiceClient) Echo(ctx context.Context, in *EchoMessage, opts ...grpc.CallOption) (*EchoMessage, error) {
 	out := new(EchoMessage)
-	err := c.cc.Invoke(ctx, "/proto.EchoServer/Echo", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.EchoService/Echo", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// EchoServerServer is the server API for EchoServer service.
-type EchoServerServer interface {
+// EchoServiceServer is the server API for EchoService service.
+type EchoServiceServer interface {
 	Echo(context.Context, *EchoMessage) (*EchoMessage, error)
 }
 
-func RegisterEchoServerServer(s *grpc.Server, srv EchoServerServer) {
-	s.RegisterService(&_EchoServer_serviceDesc, srv)
+func RegisterEchoServiceServer(s *grpc.Server, srv EchoServiceServer) {
+	s.RegisterService(&_EchoService_serviceDesc, srv)
 }
 
-func _EchoServer_Echo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _EchoService_Echo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(EchoMessage)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(EchoServerServer).Echo(ctx, in)
+		return srv.(EchoServiceServer).Echo(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.EchoServer/Echo",
+		FullMethod: "/proto.EchoService/Echo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EchoServerServer).Echo(ctx, req.(*EchoMessage))
+		return srv.(EchoServiceServer).Echo(ctx, req.(*EchoMessage))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _EchoServer_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "proto.EchoServer",
-	HandlerType: (*EchoServerServer)(nil),
+var _EchoService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "proto.EchoService",
+	HandlerType: (*EchoServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Echo",
-			Handler:    _EchoServer_Echo_Handler,
+			Handler:    _EchoService_Echo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "proto/echo.proto",
 }
 
-func init() { proto.RegisterFile("proto/echo.proto", fileDescriptor_echo_65f4ddaa9106d9fb) }
+func init() { proto.RegisterFile("proto/echo.proto", fileDescriptor_echo_8be4be0a62b13d2b) }
 
-var fileDescriptor_echo_65f4ddaa9106d9fb = []byte{
-	// 110 bytes of a gzipped FileDescriptorProto
+var fileDescriptor_echo_8be4be0a62b13d2b = []byte{
+	// 109 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x28, 0x28, 0xca, 0x2f,
 	0xc9, 0xd7, 0x4f, 0x4d, 0xce, 0xc8, 0xd7, 0x03, 0x33, 0x85, 0x58, 0xc1, 0x94, 0x92, 0x32, 0x17,
 	0xb7, 0x6b, 0x72, 0x46, 0xbe, 0x6f, 0x6a, 0x71, 0x71, 0x62, 0x7a, 0xaa, 0x90, 0x08, 0x17, 0x6b,
-	0x59, 0x62, 0x4e, 0x69, 0xaa, 0x04, 0xa3, 0x02, 0xa3, 0x06, 0x67, 0x10, 0x84, 0x63, 0x64, 0xc7,
-	0xc5, 0x05, 0x52, 0x14, 0x9c, 0x5a, 0x54, 0x96, 0x5a, 0x24, 0x64, 0xc0, 0xc5, 0x02, 0xe2, 0x09,
-	0x09, 0x41, 0x4c, 0xd2, 0x43, 0xd2, 0x2f, 0x85, 0x45, 0x4c, 0x89, 0x21, 0x89, 0x0d, 0x2c, 0x68,
-	0x0c, 0x08, 0x00, 0x00, 0xff, 0xff, 0x9f, 0xd8, 0x1d, 0xb3, 0x86, 0x00, 0x00, 0x00,
+	0x59, 0x62, 0x4e, 0x69, 0xaa, 0x04, 0xa3, 0x02, 0xa3, 0x06, 0x67, 0x10, 0x84, 0x63, 0x64, 0x0f,
+	0x51, 0x14, 0x9c, 0x5a, 0x54, 0x96, 0x99, 0x9c, 0x2a, 0x64, 0xc0, 0xc5, 0x02, 0xe2, 0x0a, 0x09,
+	0x41, 0x8c, 0xd2, 0x43, 0x32, 0x40, 0x0a, 0x8b, 0x98, 0x12, 0x43, 0x12, 0x1b, 0x58, 0xd0, 0x18,
+	0x10, 0x00, 0x00, 0xff, 0xff, 0xc9, 0xe8, 0x89, 0x9e, 0x87, 0x00, 0x00, 0x00,
 }
