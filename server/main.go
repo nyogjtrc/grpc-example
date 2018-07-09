@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"net/http"
 
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	pb "github.com/nyogjtrc/grpc-example/proto"
-
 	"google.golang.org/grpc"
 )
 
@@ -21,7 +22,12 @@ func (s *echoServer) Echo(ctx context.Context, in *pb.EchoMessage) (*pb.EchoMess
 }
 
 func main() {
-	fmt.Println("grpc example echo server :8888")
+	go grpcServer()
+	gatewayServer()
+}
+
+func grpcServer() {
+	fmt.Println("grpc echo server :8888")
 
 	lis, err := net.Listen("tcp", ":8888")
 	if err != nil {
@@ -32,4 +38,21 @@ func main() {
 	s := grpc.NewServer(opts...)
 	pb.RegisterEchoServiceServer(s, &echoServer{})
 	s.Serve(lis)
+}
+
+func gatewayServer() {
+	fmt.Println("RESTful echo server :9999")
+	grpcAddr := "localhost:8888"
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	mux := runtime.NewServeMux()
+	opts := []grpc.DialOption{grpc.WithInsecure()}
+	err := pb.RegisterEchoServiceHandlerFromEndpoint(ctx, mux, grpcAddr, opts)
+	if err != nil {
+		log.Fatalf("can not register endpoint %v", err)
+	}
+
+	http.ListenAndServe(":9999", mux)
 }
