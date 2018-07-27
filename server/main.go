@@ -7,8 +7,10 @@ import (
 	"net"
 	"net/http"
 
+	"github.com/grpc-ecosystem/go-grpc-prometheus"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	pb "github.com/nyogjtrc/grpc-example/proto"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"google.golang.org/grpc"
 )
 
@@ -35,8 +37,18 @@ func grpcServer() {
 	}
 
 	var opts []grpc.ServerOption
+	opts = append(opts, grpc.StreamInterceptor(grpc_prometheus.StreamServerInterceptor))
+	opts = append(opts, grpc.UnaryInterceptor(grpc_prometheus.UnaryServerInterceptor))
 	s := grpc.NewServer(opts...)
 	pb.RegisterEchoServiceServer(s, &echoServer{})
+	grpc_prometheus.Register(s)
+
+	go func() {
+		err := http.ListenAndServe(":8889", promhttp.Handler())
+		if err != nil {
+			log.Fatal("Unable to start a http server.")
+		}
+	}()
 	s.Serve(lis)
 }
 
